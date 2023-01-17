@@ -6,7 +6,7 @@ function fib(n::Unsigned)
     end
     f0 = BigInt(0)
     f1 = BigInt(1)
-    for i = 2:n
+    for _ = 2:n
         f0, f1 = f1, f0 + f1
     end
     f1
