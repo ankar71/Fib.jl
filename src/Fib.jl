@@ -54,8 +54,7 @@ function fib_seq(n::Signed)
 end
 
 function fib_seq(r::UnitRange{T} where T <: Unsigned)
-    full_seq = fib_seq(r.stop)
-    full_seq[r.start:r.stop]
+    fib_seq(r.stop)[r.start:r.stop]
 end
 
 function fib_seq(r::UnitRange{T} where T <: Signed)
