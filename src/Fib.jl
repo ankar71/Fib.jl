@@ -53,6 +53,24 @@ function fib_seq(n::Signed)
     end
 end
 
+function fib_seq(r::UnitRange{T} where T <: Unsigned)
+    full_seq = fib_seq(r.stop)
+    full_seq[r.start:r.stop]
+end
+
+function fib_seq(r::UnitRange{T} where T <: Signed)
+    try
+        ur = convert(UnitRange{Unsigned}, r)
+        fib_seq(ur)
+    catch e
+        if isa(e, InexactError)
+            throw(DomainError(r))
+        else
+            rethrow(e)
+        end
+    end
+end
+
 export fib, fib_seq
 
 
