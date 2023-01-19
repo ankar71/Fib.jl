@@ -29,11 +29,11 @@ function fibseq(n::Signed)
     end
 end
 
-function fibseq(r::UnitRange{T} where T <: Unsigned)
+function fibseq(r::UnitRange{<:Unsigned})
     Origin(r.start)(_fib_seq(r.stop)[r.start:r.stop])
 end
 
-function fibseq(r::UnitRange{T} where T <: Signed)
+function fibseq(r::UnitRange{<:Signed})
     if r.start ≥ 0 && r.stop ≥ r.start
         Origin(r.start)(_fib_seq(r.stop)[r.start:r.stop])
     else
@@ -41,7 +41,7 @@ function fibseq(r::UnitRange{T} where T <: Signed)
     end
 end
 
-function safefibseq(r::UnitRange{T} where T <: Integer)
+function safefibseq(r::UnitRange{<:Integer})
     if r.start ≥ 0 && r.stop ≥ r.start
         Origin(r.start)(_fib_seq(r.stop)[r.start:r.stop])
     else
