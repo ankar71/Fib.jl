@@ -1,10 +1,13 @@
 module Seq
-export fib_seq
+export fibseq, safefibseq
 
 using ..Fib: first_fib_pair, next_fib_pair
 using OffsetArrays: Origin
 
-function fib_seq(n::Unsigned)
+function _fib_seq(n::Integer)
+    if n < 0
+        return Origin(0)(BigInt[])
+    end
     result = Origin(0)(zeros(BigInt, n + 1))
     f0, f1 = first_fib_pair
     for i = 1:n
@@ -14,33 +17,35 @@ function fib_seq(n::Unsigned)
     result 
 end
 
+function fibseq(n::Unsigned)
+    _fib_seq(n)
+end
 
-function fib_seq(n::Signed)
-    try
-        fib_seq(convert(Unsigned, n))
-    catch e
-        if isa(e, InexactError)
-            throw(DomainError(n))
-        else
-            rethrow(e)
-        end
+function fibseq(n::Signed)
+    if n < 0
+        throw(DomainError(n))
+    else
+        _fib_seq(n)
     end
 end
 
-function fib_seq(r::UnitRange{T} where T <: Unsigned)
-    fib_seq(r.stop)[r.start:r.stop]
+function fibseq(r::UnitRange{T} where T <: Unsigned)
+    Origin(r.start)(_fib_seq(r.stop)[r.start:r.stop])
 end
 
-function fib_seq(r::UnitRange{T} where T <: Signed)
-    try
-        ur = convert(UnitRange{Unsigned}, r)
-        fib_seq(ur)
-    catch e
-        if isa(e, InexactError)
-            throw(DomainError(r))
-        else
-            rethrow(e)
-        end
+function fibseq(r::UnitRange{T} where T <: Signed)
+    if r.start ≥ 0 && r.stop ≥ r.start
+        Origin(r.start)(_fib_seq(r.stop)[r.start:r.stop])
+    else
+        throw(DomainError(r))
+    end
+end
+
+function safefibseq(r::UnitRange{T} where T <: Integer)
+    if r.start ≥ 0 && r.stop ≥ r.start
+        Origin(r.start)(_fib_seq(r.stop)[r.start:r.stop])
+    else
+        nothing
     end
 end
 

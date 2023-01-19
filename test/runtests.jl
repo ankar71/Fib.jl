@@ -1,5 +1,6 @@
 using Fib
 using Test
+using OffsetArrays: Origin
 
 @testset "Test Fib.fib" begin
     @test fib(0x0)    == 0
@@ -15,14 +16,19 @@ using Test
 
     @test_throws DomainError fib(-1)
 
+    @test safefib(100) == fib(100)
+    @test safefib(-10) === nothing
+
 end
 
-@testset "Test Fib.fib_seq" begin
-    @test fib_seq(0x0A)[0:10] == BigInt[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
-    @test fib_seq(0x0A) == fib_seq(10)
-    @test_throws DomainError fib_seq(-1)
-    @test fib_seq(0x2:0x5) == BigInt[1, 2, 3, 5]
-    @test fib_seq(0x2:0x5) == fib_seq(2:5)
-    @test_throws DomainError fib_seq(-2:5)
+@testset "Test Fib.fibseq" begin
+    @test fibseq(0x0A) == Origin(0)(BigInt[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
+    @test fibseq(0x0A) == fibseq(10)
+    @test_throws DomainError fibseq(-1)
+    @test fibseq(0x2:0x5) == Origin(2)(BigInt[1, 2, 3, 5])
+    @test fibseq(0x2:0x5) == fibseq(2:5)
+    @test_throws DomainError fibseq(-2:5)
 
+    @test safefibseq(-5:5) === nothing
+    @test safefibseq(5:10) == fibseq(5:10)
 end
