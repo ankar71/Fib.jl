@@ -1,41 +1,29 @@
 module Num
-export fib, safefib
+export fib, fib0, safefib
 
-using .. Fib: first_fib_pair, next_fib_pair
+using ..Fib: next_fib_pair
 
-function _fib(n::Integer) #return 0 for negatives
-    f0, f1 = first_fib_pair
-    if n ≤ 0
-        return f0
-    elseif n == 1
-        return f1
-    else
-        while n ≥ 2
-            f0, f1 = next_fib_pair(f0, f1)
-            n -= 1
-        end
-    end
-    f1
-end
-
-function fib(n::Unsigned)
-    return _fib(n)
-end
-
-function fib(n::Signed)
-    if n < 0
-        throw(DomainError(n))
-    else
-        _fib(n)
-    end
-end
-
-function safefib(n::Signed)::Union{BigInt, Nothing}
-    if n < 0
+function safefib(n::Integer)::Union{BigInt, Nothing}
+    if n < 1
         return nothing
-    else
-        return _fib(n)
     end
+    f_n1 = f_n = BigInt(1)
+    while n > 2
+        f_n1, f_n = next_fib_pair(f_n1, f_n)
+        n -= 1
+    end
+    f_n
+end
+
+function fib(n::Integer)
+    result = safefib(n)
+    (result === nothing) && throw(DomainError(n))
+    result
+end
+
+function fib0(n::Integer)
+    n == 0 && return BigInt(0)
+    fib(n)
 end
 
 end

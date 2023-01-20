@@ -1,52 +1,48 @@
 module Seq
 export fibseq, safefibseq
 
-using ..Fib: first_fib_pair, next_fib_pair
+using ..Fib: next_fib_pair
 using OffsetArrays: Origin
 
-function _fib_seq(n::Integer)
-    if n < 0
-        return Origin(0)(BigInt[])
+function safefibseq(n::Integer)
+    if n < 1
+        return nothing
     end
-    result = Origin(0)(zeros(BigInt, n + 1))
-    f0, f1 = first_fib_pair
-    for i = 1:n
-        result[i] = f1
-        f0, f1 = next_fib_pair(f0, f1)
+    result = Vector{BigInt}(undef, n)
+    f_n1 = f_n =  BigInt(1)
+    result[1] = f_n1
+    n == 1 && return result
+    result[2] = f_n
+    for i = 3:n
+        f_n1, f_n = next_fib_pair(f_n1, f_n)
+        result[i] = f_n
     end
     result 
 end
 
-function fibseq(n::Unsigned)
-    _fib_seq(n)
-end
-
-function fibseq(n::Signed)
-    if n < 0
+function fibseq(n::Integer)
+    result = safefibseq(n)
+    if result === nothing
         throw(DomainError(n))
-    else
-        _fib_seq(n)
     end
+    result
 end
 
-function fibseq(r::UnitRange{<:Unsigned})
-    Origin(r.start)(_fib_seq(r.stop)[r.start:r.stop])
-end
-
-function fibseq(r::UnitRange{<:Signed})
-    if r.start ≥ 0 && r.stop ≥ r.start
-        Origin(r.start)(_fib_seq(r.stop)[r.start:r.stop])
-    else
-        throw(DomainError(r))
-    end
-end
 
 function safefibseq(r::UnitRange{<:Integer})
-    if r.start ≥ 0 && r.stop ≥ r.start
-        Origin(r.start)(_fib_seq(r.stop)[r.start:r.stop])
+    if 0 < r.start <= r.stop
+        Origin(r.start)(safefibseq(r.stop)[r.start:r.stop])
     else
         nothing
     end
+end
+
+function fibseq(r::UnitRange{<:Integer})
+    result = safefibseq(r)
+    if result === nothing
+        throw(DomainError(r))
+    end
+    result
 end
 
 end

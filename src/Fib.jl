@@ -1,8 +1,7 @@
 module Fib
-export fib, safefib, fibseq, safefibseq, main
+export fib, fib0, safefib, fibseq, safefibseq, main
 
-const first_fib_pair = BigInt(0), BigInt(1)
-@inline next_fib_pair(f0::BigInt, f1::BigInt) = f1, f0 + f1
+@inline next_fib_pair(f1::BigInt, f2::BigInt) = f2, f1 + f2
 
 include("Num.jl")
 using .Num
