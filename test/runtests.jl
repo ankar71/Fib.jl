@@ -23,6 +23,8 @@ using OffsetArrays: Origin
 end
 
 @testset "Test Fib.fibseq" begin
+    @test fibseq(1:1) == BigInt[1]
+    @test fibseq(1:2) == BigInt[1, 1]
     @test fibseq(0x0A) == BigInt[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
     @test fibseq(0x0A) == fibseq(10)
     @test_throws DomainError fibseq(-1)
