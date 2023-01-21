@@ -32,4 +32,8 @@ end
 
     @test safefibseq(-5:5) === nothing
     @test safefibseq(5:10) == fibseq(5:10)
+
+    f100_102 = safefibseq(100:102)
+    @test f100_102[100] == fib(100)
+    @test f100_102[102] == fib(102)
 end
