@@ -3,21 +3,21 @@ using Test
 using OffsetArrays: Origin
 
 @testset "Test Fib.fib" begin
-    @test fib0(0x0)   == 0 
+    @test fib0(0x0) == 0
     @test fib(0x0001) == 1
-    @test fib(0x03)   == 2
-    @test fib(0x0A)   == 55
+    @test fib(0x03) == 2
+    @test fib(0x0A) == 55
 
 
     @test fib0(0) == 0
-    @test fib(1)  == 1
-    @test fib(3)  == 2
+    @test fib(1) == 1
+    @test fib(3) == 2
     @test fib(10) == 55
 
     @test_throws DomainError fib(-1)
 
     @test safefib(100) == fib(100)
-    @test safefib( 0)  === nothing
+    @test safefib(0) === nothing
     @test safefib(-10) === nothing
 
 end

@@ -11,11 +11,11 @@ function fibpair(n::Integer)
     (f_n, f_n1)
 end
 
-function safefib(n::Integer)::Union{BigInt, Nothing}
+function safefib(n::Integer)::Union{BigInt,Nothing}
     n == 1 && return BigInt(1)
-    p = fibpair(n-1)
+    p = fibpair(n - 1)
     p === nothing && return nothing
-    p[2] 
+    p[2]
 end
 
 function fib(n::Integer)
