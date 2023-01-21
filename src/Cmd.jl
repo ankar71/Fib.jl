@@ -8,7 +8,7 @@ function main(args=ARGS)
     else
         arg = args[1]
         try
-            n = parse(UInt, arg)
+            n = parse(Int, arg)
             println("$(Fib.fib(n))")
             return 0
         catch
