@@ -5,9 +5,7 @@ using ..Fib: next_fib_pair
 using OffsetArrays: Origin
 
 function safefibseq(n::Integer)
-    if n < 1
-        return nothing
-    end
+    n < 1 && return nothing
     result = Vector{BigInt}(undef, n)
     f_n1 = f_n =  BigInt(1)
     result[1] = f_n1
