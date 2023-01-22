@@ -9,7 +9,7 @@ using ..Num: fibpair
     safefibseq(r::UnitRange{<:Integer})
 
 Compute the fibonacci sequence for the positions given in the range `r`.
-The sequence is returned as an [`OffsetVector`](@ref) with the same indices as the given range.
+The sequence is returned as an [`OffsetArrays.OffsetVector`](@ref) with the same indices as the given range.
 
 Requirement: `0 < r.start ≤ r.stop`.
 
