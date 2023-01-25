@@ -21,32 +21,23 @@ end
 
 function main(args=ARGS)
     parsed_args = get_args(args)
-    # for (arg, val) in parsed_args
-    #     println("$arg: $val ($(typeof(val)))")
-    # end
+
     index = parsed_args["index"]
     if index < 1
         println("Negative index ignored. Starting at 1.")
         index = 1
     end
     n = parsed_args["length"]
-    n == 0 && return # Do nothing for zero length
-    is_reversed = false
-    if n < 0
-        n = -n
-        is_reversed = true
-    end
+    n == 0 && return 0 # Do nothing for zero length
 
-    range = index:(index+n-1)
+    range = index:(index + abs(n) - 1)
     seq = Fib.fibseq(range)
-    if is_reversed
-        range=reverse(range)
-    end
 
-    for i=range
+    for i=(n<0 ? reverse(range) : range)
         println("$i: $(seq[i])")
     end
 
+    return 0
 end
 
 end
